@@ -21,26 +21,31 @@
                 <button type="submit" @click="process" class="btn btn-primary">SUBMIT</button>
             </form>
 
-            <h2 v-if="submitted" class="mt-5">{{greeting}}</h2> 
-            <!-- string interpolation -->
-
-            
+            <h2 v-if="submitted" class="mt-5">{{response}}</h2> 
+            <!-- string interpolation -->            
         </div>
     
     </div>
     
-    
+    <div id="api">
+        <h1>NASA STUFF</h1>
+        <div class="container">
+            <img :src="imgSrc" :title="imgTitle" />
+        </div>
+    </div>
     
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        
     <script>
     
         var apiKey = 'tRf5iI6FRxbFtUWveSXAzXo4wTwnmEgcuOf1U8hn';
+        var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
 
         var vm = new Vue({
             el: "#app", 
             data: {
-                greeting: 'Your form ahs been submitted!',
+                response: 'Your form ahs been submitted!',
                 email: 'mike@example.com', 
                 submitted: false,
             }, 
@@ -51,6 +56,23 @@
                     this.submitted = true;
                 }
             }
+        })
+
+        var vm2 = new Vue({
+            el: '#api', 
+            data: {
+                imgSrc: '',
+                imgTitle: ''
+            }
+        });
+
+        axios.get(url)
+        .then(function (res) {
+            // console.clear();
+            // console.log(res);
+
+            vm2.imgSrc = res.data.url; 
+            vm2.imgTitle = res.data.title;
         })
         
     </script>
