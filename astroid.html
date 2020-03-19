@@ -20,14 +20,26 @@
             <div class="card mt-5">
                 <table class="table">
                     <thead class="thead-light">
+                        <th>#</th>
                         <th>Name</th>
                         <th>Close Approach Date</th>
+                        <th>Estimated Diameter (in miles)</th>
+                        <th>Remove</th>
                     </thead>
     
                     <tbody v-cloak>
-                        <tr v-for="a in astroids">
+                        <tr v-for="(a, index) in astroids" :key="a.neo_reference_id">
+                            <td>{{index + 1}}</td>
                             <td>{{ a.name }} </td>
                             <td>{{ getCloseApproachDate(a) }} </td>
+                            <td>
+                                <ul>
+                                    <li>
+                                        {{a.estimated_diameter.miles.estimated_diameter_min}} to {{a.estimated_diameter.miles.estimated_diameter_max}}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td><button @click="remove(index)" class="btn btn-warning">remove</button></td>
                         </tr>
                     </tbody>
     
@@ -64,7 +76,7 @@
                     .then(function (res) {
                         // vm.imgSrc = res.data.url; 
                         // vm.imgTitle = res.data.title;
-                        console.log(res)
+                        // console.log(res)
                         vm.astroids = res.data.near_earth_objects.slice(0, 10);
                     });
                 }, 
@@ -74,6 +86,10 @@
                     } else {
                         return "N/A";
                     }
+                },
+                remove: function (index) {
+                    
+                    this.astroids.splice(index, 1);
                 }
             }
         });
