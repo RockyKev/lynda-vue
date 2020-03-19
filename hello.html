@@ -30,18 +30,16 @@
     <div id="api">
         <h1>NASA STUFF</h1>
         <div class="container">
+            <h2>{{imgTitle}} </h2>
             <img :src="imgSrc" :title="imgTitle" />
         </div>
     </div>
     
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
     <script>
     
-        var apiKey = 'tRf5iI6FRxbFtUWveSXAzXo4wTwnmEgcuOf1U8hn';
-        var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
-
         var vm = new Vue({
             el: "#app", 
             data: {
@@ -63,17 +61,26 @@
             data: {
                 imgSrc: '',
                 imgTitle: ''
+            }, 
+
+            created: function () {
+                this.fetchApod();
+            },
+
+            methods: {
+                fetchApod: function () {
+                    var apiKey = 'tRf5iI6FRxbFtUWveSXAzXo4wTwnmEgcuOf1U8hn';
+                    var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
+
+                    axios.get(url)
+                    .then(function (res) {
+                        vm2.imgSrc = res.data.url; 
+                        vm2.imgTitle = res.data.title;
+                    });
+                }
             }
         });
 
-        axios.get(url)
-        .then(function (res) {
-            // console.clear();
-            // console.log(res);
-
-            vm2.imgSrc = res.data.url; 
-            vm2.imgTitle = res.data.title;
-        })
         
     </script>
 
