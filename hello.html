@@ -1,0 +1,47 @@
+<!DOCTYPE html> 
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+
+    <div id="app">
+
+        <div class="container">
+            <form class="mt-5">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <!-- <input type="email" class="form-control form-control-lg" v-bind:value="email"> ONE WAY DATABINDING -->
+
+                    <input type="email" class="form-control form-control-lg" v-model="email">
+                </div>
+                <button type="submit" class="btn btn-primary">SUBMIT</button>
+            </form>
+            <h1>{{greeting}}</h1> 
+            <!-- string interpolation -->
+    
+        </div>
+    
+    </div>
+    
+    
+    
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <script>
+    
+        var vm = new Vue({
+            el: "#app", 
+            data: {
+                greeting: 'Hello from Vue!',
+                email: 'mike@example.com'
+            }
+        })
+        
+    </script>
+
+
+</body>
+
+</html>
