@@ -6,6 +6,19 @@
     [v-cloak] {
         display: none;
     }
+
+    .highlight {
+        border: solid 3px red;
+        color: red;
+    }
+    
+    .shooting-star-leave-to, .shooting-star-enter {
+        transform: translateX(150px) rotate(30deg);
+        opacity: 0;
+    }
+    .shooting-star-enter-active, .shooting-star-leave-active {
+        transition: all .5s ease;
+    }
 </style>
 
 </head>
@@ -15,15 +28,22 @@
     
     <div id="api">
         <div class="container">
-            <h1 class="card">Near Earth Objects</h1>
-            <div class="m-3" v-cloak v-if="asteroids.length > 0">
-                <!-- <p>showing {{ asteroids.length}} items</p> -->
-                <p>showing {{ numasteroids }} items</p>
-                <p> {{ closestObject }} has the shortest diameter. </p>
+            <h1 class="card-header">Near Earth Objects</h1>
+
+            <transition name="shooting-star">
+                <div class="m-3" v-cloak v-if="asteroids.length > 0 && showSummary">
+                    <!-- <p>showing {{ asteroids.length}} items</p> -->
+                    <p>showing {{ numasteroids }} items</p>
+                    <p> {{ closestObject }} has the shortest diameter. </p>
+                </div>
+            </transition>
+
+            <div class="m-3">
+                <a href="#" @click="showSummary = !showSummary">Show/Hide Summary</a>
             </div>
 
             <div class="card mt-5">
-                <table class="table table-striped">
+                <table class="table table-striped" :class="[{'table-dark': false}, 'table-bordered']">
                     <thead class="thead-light">
                         <th>#</th>
                         <th>Name</th>
@@ -34,7 +54,7 @@
     
                     <tbody v-cloak>
                         <tr v-for="(a, index) in asteroids" :key="a.neo_reference_id"
-                        :style="getRowStyle(a)">
+                        :class="{highlight: isMissingData(a), 'shadow-sm': true}">
                             <td>{{index + 1}}</td>
                             <td>{{ a.name }} </td>
                             <td>{{ getCloseApproachDate(a) }} </td>
@@ -66,7 +86,8 @@
         var vm = new Vue({
             el: '#api', 
             data: {
-                asteroids: []
+                asteroids: [], 
+                showSummary: true
             }, 
 
             created: function () {
@@ -118,6 +139,9 @@
                         return {border: 'solid 3px red', 
                                 color: 'red'};
                     }
+                }, 
+                isMissingData: function (a) {
+                    return a.close_approach_data.length == 0;
                 }
             }
         });
